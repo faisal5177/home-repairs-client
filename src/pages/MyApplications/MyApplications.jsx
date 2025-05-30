@@ -14,19 +14,22 @@ const MyApplications = () => {
   }, [user.email]);
 
   const handleDelete = (serviceId) => {
-    fetch(`http://localhost:3000/service-application/${serviceId}`, {
-      method: 'DELETE',
-    })
-      .then((res) => res.json())
-      .then(() => {
-        setServices(services.filter((service) => service._id !== serviceId));
+    fetch(`http://localhost:3000/service-application?email=${user.email}`)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return res.json();
       })
-      .catch((error) => console.error('Error deleting service:', error));
+      .then((data) => setServices(data))
+      .catch((error) => console.error('Fetch error:', error));
   };
 
   return (
     <div className="my-5 border rounded-lg shedo-2xl">
-      <h2 className='text-xl font-bold my-5'>My Service Bookings: {services.length}</h2>
+      <h2 className="text-xl font-bold my-5">
+        My Service Bookings: {services.length}
+      </h2>
       <div className="overflow-x-auto">
         <table className="table">
           {/* head */}
@@ -77,7 +80,7 @@ const MyApplications = () => {
                 <th>
                   <button
                     className="btn btn-ghost btn-xs"
-                    onClick={() => handleDelete(service._id)} 
+                    onClick={() => handleDelete(service._id)}
                   >
                     <RiDeleteBinLine className="text-red-600" />
                   </button>

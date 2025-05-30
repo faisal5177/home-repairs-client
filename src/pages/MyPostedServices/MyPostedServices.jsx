@@ -23,11 +23,14 @@ const MyPostedServices = () => {
             <tr>
               <th>#</th>
               <th>Service Name</th>
-              <th>Category</th>
+              <th>Booking Date and time</th>
               <th>Price</th>
               <th>Status</th>
+                            <th>Application Count</th>
+
             </tr>
           </thead>
+
           <tbody>
             {services.map((service, index) => (
               <tr key={service._id || index} className="bg-base-200">
@@ -35,7 +38,8 @@ const MyPostedServices = () => {
                 <td>{service.serviceName}</td>
                 <td>{service.createdAt}</td>
                 <td>${service.price}</td>
-                <td>{service.status || "Pending"}</td>
+                <td>{service.status || 'Pending'}</td>
+                <td>${service.applicationCount}</td>
               </tr>
             ))}
           </tbody>
