@@ -1,7 +1,9 @@
 import { TbCurrencyTaka } from 'react-icons/tb';
+import { Link } from 'react-router-dom';
 
 const HotServicesCard = ({ service }) => {
   const {
+    _id,
     serviceName,
     imageURL,
     price,
@@ -35,7 +37,9 @@ const HotServicesCard = ({ service }) => {
             <span>{price}</span>
             <TbCurrencyTaka className="ml-1" />
           </div>
+         <Link to={`/services/${_id}`}>
           <button className="btn btn-primary btn-sm">View Detail</button>
+         </Link>
         </div>
       </div>
     </div>
