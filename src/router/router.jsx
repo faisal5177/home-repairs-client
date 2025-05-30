@@ -9,6 +9,7 @@ import ServiceApply from '../pages/ServiceApply/ServiceApply';
 import MyApplications from '../pages/MyApplications/MyApplications';
 import AddService from '../pages/AddService/AddService';
 import AllServices from '../pages/AllServices/AllServices';
+import MyPostedServices from '../pages/MyPostedServices/MyPostedServices';
 
 const router = createBrowserRouter([
   {
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
       {
         path: 'allServices',
         element: <PrivateRouter><AllServices></AllServices></PrivateRouter>
+      },
+      {
+        path: 'myPostedServices',
+        element: <PrivateRouter><MyPostedServices></MyPostedServices></PrivateRouter>,
       },
       {
         path: 'register',

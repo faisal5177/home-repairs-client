@@ -52,7 +52,7 @@ const AddService = ({ setServices }) => {
           setServices((prev) => [...prev, { ...newService, _id: data.serviceId }]);
         }
 
-        navigate('/');
+        navigate('/myPostedServices');
       } else {
         Swal.fire('Error', data?.error || 'Failed to add service!', 'error');
       }
