@@ -10,6 +10,7 @@ import MyApplications from '../pages/MyApplications/MyApplications';
 import AddService from '../pages/AddService/AddService';
 import AllServices from '../pages/AllServices/AllServices';
 import MyPostedServices from '../pages/MyPostedServices/MyPostedServices';
+import ViewApplications from '../pages/ViewApplications/ViewApplications';
 
 const router = createBrowserRouter([
   {
@@ -33,23 +34,55 @@ const router = createBrowserRouter([
       },
       {
         path: 'serviceApply/:id',
-        element:<PrivateRouter><ServiceApply></ServiceApply></PrivateRouter>
+        element: (
+          <PrivateRouter>
+            <ServiceApply></ServiceApply>
+          </PrivateRouter>
+        ),
       },
       {
         path: 'myApplications',
-        element: <PrivateRouter><MyApplications></MyApplications></PrivateRouter>
+        element: (
+          <PrivateRouter>
+            <MyApplications></MyApplications>
+          </PrivateRouter>
+        ),
       },
       {
         path: 'addService',
-        element: <PrivateRouter><AddService></AddService></PrivateRouter>
+        element: (
+          <PrivateRouter>
+            <AddService></AddService>
+          </PrivateRouter>
+        ),
       },
       {
         path: 'allServices',
-        element: <PrivateRouter><AllServices></AllServices></PrivateRouter>
+        element: (
+          <PrivateRouter>
+            <AllServices></AllServices>
+          </PrivateRouter>
+        ),
       },
       {
         path: 'myPostedServices',
-        element: <PrivateRouter><MyPostedServices></MyPostedServices></PrivateRouter>,
+        element: (
+          <PrivateRouter>
+            <MyPostedServices></MyPostedServices>
+          </PrivateRouter>
+        ),
+      },
+      {
+        path: 'viewApplications/:service_id',
+        element: (
+          <PrivateRouter>
+            <ViewApplications />
+          </PrivateRouter>
+        ),
+        loader: ({ params }) =>
+          fetch(
+            `http://localhost:3000/service-application/services/${params.service_id}`
+          ),
       },
       {
         path: 'register',

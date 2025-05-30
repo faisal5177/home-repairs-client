@@ -13,16 +13,22 @@ const MyApplications = () => {
       .then((data) => setServices(data));
   }, [user.email]);
 
-  const handleDelete = (serviceId) => {
-    fetch(`http://localhost:3000/service-application?email=${user.email}`)
+  const handleDelete = (applicationId) => {
+    fetch(`http://localhost:3000/service-application/${applicationId}`, {
+      method: 'DELETE',
+    })
       .then((res) => {
         if (!res.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error('Failed to delete the application');
         }
         return res.json();
       })
-      .then((data) => setServices(data))
-      .catch((error) => console.error('Fetch error:', error));
+      .then(() => {
+        setServices((prev) =>
+          prev.filter((service) => service._id !== applicationId)
+        );
+      })
+      .catch((error) => console.error('Delete error:', error));
   };
 
   return (
