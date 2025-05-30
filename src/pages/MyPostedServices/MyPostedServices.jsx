@@ -40,13 +40,6 @@ const MyPostedServices = () => {
                 <td>${service.price}</td>
                 <td>{service.status || 'Pending'}</td>
                 <td>${service.applicationCount}</td>
-                <td>
-                  <Link to={`/viewApplications/${service._id}`}>
-                    <button className="hover:text-blue-700 text-sm">
-                      View Application
-                    </button>
-                  </Link>
-                </td>
               </tr>
             ))}
           </tbody>
