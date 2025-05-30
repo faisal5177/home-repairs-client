@@ -26,7 +26,7 @@ const MyApplications = () => {
 
   return (
     <div className="my-5 border rounded-lg shedo-2xl">
-      <h2>Service Bookings: {services.length}</h2>
+      <h2 className='text-xl font-bold my-5'>My Service Bookings: {services.length}</h2>
       <div className="overflow-x-auto">
         <table className="table">
           {/* head */}

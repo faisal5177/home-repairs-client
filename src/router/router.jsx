@@ -7,6 +7,8 @@ import ServiceDetails from '../pages/ServiceDetails/ServiceDetails';
 import PrivateRouter from './PrivateRouter';
 import ServiceApply from '../pages/ServiceApply/ServiceApply';
 import MyApplications from '../pages/MyApplications/MyApplications';
+import AddService from '../pages/AddService/AddService';
+import AllServices from '../pages/AllServices/AllServices';
 
 const router = createBrowserRouter([
   {
@@ -19,7 +21,7 @@ const router = createBrowserRouter([
         element: <Home></Home>,
       },
       {
-        path: '/services/:id',
+        path: 'services/:id',
         element: (
           <PrivateRouter>
             <ServiceDetails></ServiceDetails>
@@ -29,12 +31,20 @@ const router = createBrowserRouter([
           fetch(`http://localhost:3000/services/${params.id}`),
       },
       {
-        path: '/serviceApply/:id',
+        path: 'serviceApply/:id',
         element:<PrivateRouter><ServiceApply></ServiceApply></PrivateRouter>
       },
       {
-        path: '/myApplications',
+        path: 'myApplications',
         element: <PrivateRouter><MyApplications></MyApplications></PrivateRouter>
+      },
+      {
+        path: 'addService',
+        element: <PrivateRouter><AddService></AddService></PrivateRouter>
+      },
+      {
+        path: 'allServices',
+        element: <PrivateRouter><AllServices></AllServices></PrivateRouter>
       },
       {
         path: 'register',
