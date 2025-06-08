@@ -11,6 +11,7 @@ import AddService from '../pages/AddService/AddService';
 import AllServices from '../pages/AllServices/AllServices';
 import MyPostedServices from '../pages/MyPostedServices/MyPostedServices';
 import ViewApplications from '../pages/ViewApplications/ViewApplications';
+import EditService from '../pages/EditService/EditService';
 
 const router = createBrowserRouter([
   {
@@ -84,6 +85,15 @@ const router = createBrowserRouter([
             `http://localhost:3000/service-application/services/${params.service_id}`
           ),
       },
+      {
+        path: 'editService/:id',
+        element: (
+          <PrivateRouter>
+            <EditService />
+          </PrivateRouter>
+        ),
+      },
+
       {
         path: 'register',
         element: <Register></Register>,
