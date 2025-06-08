@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
-import { motion } from 'motion/react';
-import { easeOut } from 'motion';
+import { motion } from 'framer-motion';
+import { easeOut } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
-// Split images into 2 separate arrays
 const leftImages = [
   'https://i.ibb.co/d4GySw33/room-cleaning.jpg',
   'https://i.ibb.co/Pv4QDnCY/banner-img-1.webp',
@@ -25,21 +24,20 @@ const Banner = ({ user }) => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % leftImages.length);
     }, 10000);
-
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <div className="hero bg-base-200 min-m-screen border rounded-lg  shadow-2xl mb-5">
+    <div className="hero bg-base-200 min-m-screen border rounded-lg shadow-2xl mb-5">
       <div className="hero-content ml-10 flex-col -mt-[120px] py-16 lg:flex-row-reverse">
-        {/* === Animated Image Section === */}
-        <div className="flex-1  flex-col-reverse min-h-[350px] flex">
+        {/* Images */}
+        <div className="flex-1 flex-col-reverse min-h-[350px] flex">
           <motion.img
             key={leftImages[currentIndex]}
             animate={{ y: [50, 0, 50] }}
             transition={{ duration: 10, repeat: Infinity }}
             src={leftImages[currentIndex]}
-            className="w-[230px]  h-auto object-cover rounded-t-[40px] rounded-br-[40px] border-l-8 border-b-8 border-sky-500 -mt-10 rounded-3xl rounded-bl-none shadow-2xl "
+            className="w-[230px] h-auto object-cover rounded-t-[40px] rounded-br-[40px] border-l-8 border-b-8 border-sky-500 -mt-10 rounded-3xl rounded-bl-none shadow-2xl"
             alt="Cleaning Service"
           />
           <motion.img
@@ -47,12 +45,12 @@ const Banner = ({ user }) => {
             animate={{ x: [-100, -150, -100] }}
             transition={{ duration: 10, repeat: Infinity }}
             src={rightImages[currentIndex]}
-            className="w-[230px]  h-auto object-cover rounded-t-[40px] rounded-br-[40px] border-l-8 border-b-8 border-sky-500 -mt-20 rounded-3xl ml-[250px] right-24 rounded-bl-none shadow-2xl"
+            className="w-[230px] h-auto object-cover rounded-t-[40px] rounded-br-[40px] border-l-8 border-b-8 border-sky-500 -mt-20 rounded-3xl ml-[250px] right-24 rounded-bl-none shadow-2xl"
             alt="Electrician Service"
           />
         </div>
 
-        {/* === Text Section === */}
+        {/* Text */}
         <div className="flex-1 mr-10">
           <motion.h1
             animate={{ x: 50 }}
@@ -72,23 +70,17 @@ const Banner = ({ user }) => {
               Services
             </motion.span>
           </motion.h1>
-
           <p className="py-6 text-sm">
-            <span>
-              <span className="font-bold text-xl mr-1 text-green-400">
-                Cleaning services
-              </span>{' '}
-              help maintain hygiene in homes and offices.
-            </span>
+            <span className="font-bold text-xl mr-1 text-green-400">
+              Cleaning services
+            </span>{' '}
+            help maintain hygiene in homes and offices.
             <br />
-            <span>
-              <span className="font-bold mr-1 text-xl text-red-400">
-                Electrician services
-              </span>{' '}
-              are essential for resolving electrical issues.
-            </span>
+            <span className="font-bold mr-1 text-xl text-red-400">
+              Electrician services
+            </span>{' '}
+            are essential for resolving electrical issues.
           </p>
-
           {user && (
             <Link to="/allServices">
               <button className="btn btn-primary">All Services</button>

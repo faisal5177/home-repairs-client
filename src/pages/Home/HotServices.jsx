@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import HotServicesCard from './HotServicesCard';
 
 const HotServices = () => {
@@ -7,8 +7,9 @@ const HotServices = () => {
   useEffect(() => {
     fetch('http://localhost:3000/services')
       .then((res) => res.json())
-      .then((data) => setServices(data));
-  }, []); 
+      .then((data) => setServices(data))
+      .catch((err) => console.error('Failed to load services', err));
+  }, []);
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-4">

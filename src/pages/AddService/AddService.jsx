@@ -21,14 +21,18 @@ const AddService = ({ setServices }) => {
     }
 
     const newService = {
-      imageURL: initialData.service_image || user?.photoURL || 'https://placehold.co/150',
+      imageURL:
+        initialData.service_image ||
+        user?.photoURL ||
+        'https://placehold.co/150',
       serviceName: initialData.service_name,
       price: parseFloat(initialData.price),
       serviceArea: initialData.location,
       description: initialData.description,
       providerName: user?.displayName || 'Unknown',
       providerEmail: user?.email || 'Not Available',
-      providerImage: user?.photoURL || 'https://i.ibb.co/2FsfXqM/default-avatar.png',
+      providerImage:
+        user?.photoURL || 'https://i.ibb.co/2FsfXqM/default-avatar.png',
       createdBy: user?.uid || 'N/A',
     };
 
@@ -49,7 +53,10 @@ const AddService = ({ setServices }) => {
         e.target.reset();
 
         if (setServices) {
-          setServices((prev) => [...prev, { ...newService, _id: data.serviceId }]);
+          setServices((prev) => [
+            ...prev,
+            { ...newService, _id: data.serviceId },
+          ]);
         }
 
         navigate('/myPostedServices');
@@ -75,38 +82,69 @@ const AddService = ({ setServices }) => {
           width="50"
           className="mx-auto rounded-full"
         />
-        <p><strong>Name:</strong> {user?.displayName || 'Unknown'}</p>
-        <p><strong>Email:</strong> {user?.email || 'Not Available'}</p>
+        <p>
+          <strong>Name:</strong> {user?.displayName || 'Unknown'}
+        </p>
+        <p>
+          <strong>Email:</strong> {user?.email || 'Not Available'}
+        </p>
       </div>
 
       <form onSubmit={handleAddService} className="card-body">
         <div className="form-control">
           <label className="label">Service Image URL</label>
-          <input type="text" name="service_image" className="w-full input input-bordered" />
+          <input
+            type="text"
+            name="service_image"
+            className="w-full input input-bordered"
+          />
         </div>
 
         <div className="form-control">
           <label className="label">Service Name</label>
-          <input type="text" name="service_name" className="w-full input input-bordered" required />
+          <input
+            type="text"
+            name="service_name"
+            className="w-full input input-bordered"
+            required
+          />
         </div>
 
         <div className="form-control">
           <label className="label">Price</label>
-          <input type="number" name="price" className="w-full input input-bordered" required />
+          <input
+            type="number"
+            name="price"
+            className="w-full input input-bordered"
+            required
+          />
         </div>
 
         <div className="form-control">
           <label className="label">Service Location</label>
-          <input type="text" name="location" className="w-full input input-bordered" required />
+          <input
+            type="text"
+            name="location"
+            className="w-full input input-bordered"
+            required
+          />
         </div>
 
         <div className="form-control">
           <label className="label">Description</label>
-          <textarea name="description" className="textarea textarea-bordered w-full" required></textarea>
+          <textarea
+            name="description"
+            className="textarea textarea-bordered w-full"
+            required
+          ></textarea>
         </div>
 
         <div className="form-control mt-6">
-          <button type="submit" className="btn btn-primary w-full font-bold" disabled={loading}>
+          <button
+            type="submit"
+            className="btn btn-primary w-full font-bold"
+            disabled={loading}
+          >
             {loading ? 'Adding...' : 'Add Service'}
           </button>
         </div>

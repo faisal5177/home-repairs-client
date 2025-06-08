@@ -1,95 +1,119 @@
-import React, { useState } from 'react';
-import { useLoaderData } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import useAuth from '../../hooks/useAuth';
 import Swal from 'sweetalert2';
 
 const ViewApplications = () => {
-  const applications = useLoaderData();
-  const [appList, setAppList] = useState(applications);
+  const { user } = useAuth();
+  const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const handleStatusUpdate = (id, newStatus) => {
-    fetch(`http://localhost:3000/service-application/${id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ status: newStatus }),
-    })
-      .then(async (res) => {
-        if (!res.ok) {
-          const errorText = await res.text(); // Read raw HTML or error
-          throw new Error(`Server responded with ${res.status}: ${errorText}`);
+  useEffect(() => {
+    if (user?.email) {
+      fetch(`http://localhost:3000/service-application?email=${user.email}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setServices(data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.error('Failed to load bookings', err);
+          setLoading(false);
+        });
+    }
+  }, [user?.email]);
+
+  const handleStatusChange = async (id, newStatus) => {
+    try {
+      const res = await fetch(
+        `http://localhost:3000/service-application/${id}`,
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ status: newStatus }),
         }
-        return res.json();
-      })
-      .then(() => {
-        const updated = appList.map((app) =>
-          app._id === id ? { ...app, status: newStatus } : app
-        );
-        setAppList(updated);
+      );
 
-        // Show success alert here
-        Swal.fire({
-          icon: 'success',
-          title: 'Status Updated',
-          text: `The application status has been updated to "${newStatus}".`,
-          timer: 2000,
-          showConfirmButton: false,
-        });
-      })
-      .catch((err) => {
-        console.error('Status update error:', err);
-        Swal.fire({
-          icon: 'error',
-          title: 'Update Failed',
-          text: err.message,
-        });
+      if (!res.ok) throw new Error(await res.text());
+
+      const updated = services.map((service) =>
+        service._id === id ? { ...service, status: newStatus } : service
+      );
+      setServices(updated);
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Status Updated',
+        text: `Status updated to "${newStatus}"`,
+        timer: 2000,
+        showConfirmButton: false,
       });
+    } catch (err) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Update Failed',
+        text: err.message,
+      });
+    }
   };
 
+  if (loading) {
+    return (
+      <div className="text-center text-lg">Loading booked services...</div>
+    );
+  }
+
   return (
-    <div>
-      <h2 className="text-3xl mb-4">
-        Bookings for this service: {appList.length}
-      </h2>
-      <div className="overflow-x-auto">
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Applicant Email</th>
-              <th>Location</th>
-              <th>Service Date</th>
-              <th>Status</th>
-              <th>Update Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {appList.map((app) => (
-              <tr key={app._id}>
-                <td>{app.applicant_email}</td>
-                <td>{app.location}</td>
-                <td>{new Date(app.serviceDate).toLocaleDateString()}</td>
-                <td>{app.status || 'Pending'}</td>
-                <td>
-                  <select
-                    onChange={(e) =>
-                      handleStatusUpdate(app._id, e.target.value)
-                    }
-                    defaultValue={app.status || 'default'}
-                    className="select select-sm"
-                  >
-                    <option disabled value="default">
-                      Change Status
-                    </option>
-                    <option value="Pending">Pending</option>
-                    <option value="Working">Working</option>
-                    <option value="Complete">Complet</option>
-                  </select>
-                </td>
+    <div className="my-5 border rounded-lg shadow-xl p-6">
+      <h2 className="text-3xl mb-4">Booked Services ({services.length})</h2>
+
+      {services.length === 0 ? (
+        <p className="text-center text-gray-500 text-lg">
+          No one has booked your services yet.
+        </p>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Service Name</th>
+                <th>Booked By</th>
+                <th>Booking Date</th>
+                <th>Location</th>
+                <th>Price</th>
+                <th>Status</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {services.map((service, index) => (
+                <tr key={service._id}>
+                  <td>{index + 1}</td>
+                  <td>{service.serviceName}</td>
+                  <td>{service.applicant_email}</td>
+                  <td>{new Date(service.createdAt).toLocaleDateString()}</td>
+                  <td>{service.location}</td>
+                  <td>${service.price}</td>
+                  <td>
+                    <select
+                      onChange={(e) =>
+                        handleStatusChange(service._id, e.target.value)
+                      }
+                      value={service.status || 'Pending'}
+                      className="select select-sm"
+                    >
+                      <option value="Pending">Pending</option>
+                      <option value="Working">Working</option>
+                      <option value="Complete">Complete</option>
+                    </select>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 };

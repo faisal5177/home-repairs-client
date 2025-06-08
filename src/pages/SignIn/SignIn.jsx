@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import AuthContext from '../../context/AuthContext';
 import SocialLogin from '../shared/SocialLogin';
@@ -11,7 +11,9 @@ const SignIn = () => {
   const location = useLocation();
   const from = location.state?.from?.pathname || '/';
 
-  const handleSignIn = (e) => {
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleSignIn = async (e) => {
     e.preventDefault();
     const form = e.target;
     const email = form.email.value;
@@ -26,15 +28,33 @@ const SignIn = () => {
       return;
     }
 
-    signInUser(email, password)
-      .then((result) => {
-        console.log('Sign in successful:', result.user.email);
-        navigate(from, { replace: true });
-      })
-      .catch((error) => {
-        console.error('Sign in failed:', error.message);
-        alert('Sign in failed: ' + error.message);
+    try {
+      const result = await signInUser(email, password);
+      const loggedUser = result.user;
+
+      const jwtRes = await fetch('http://localhost:3000/jwt', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({ email: loggedUser.email }),
       });
+
+      if (jwtRes.ok) {
+        navigate(from, { replace: true });
+      } else {
+        const errorData = await jwtRes.json();
+        alert(`JWT Error: ${errorData.message || 'Something went wrong'}`);
+      }
+    } catch (error) {
+      console.error('Sign in failed:', error.message);
+      alert('Sign in failed: ' + error.message);
+    }
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
   };
 
   return (
@@ -58,18 +78,26 @@ const SignIn = () => {
                 required
               />
             </div>
-            <div className="form-control">
+            <div className="form-control relative">
               <label className="label">
                 <span className="label-text">Password</span>
               </label>
               <input
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 placeholder="password"
                 name="password"
-                className="input input-bordered"
+                className="input input-bordered pr-16"
                 required
               />
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="btn btn-sm absolute top-1/2 right-2 -translate-y-1/2"
+              >
+                {showPassword ? 'Hide' : 'Show'}
+              </button>
             </div>
+
             <div className="form-control mt-6 w-full">
               <button className="btn btn-primary w-full">Login</button>
             </div>

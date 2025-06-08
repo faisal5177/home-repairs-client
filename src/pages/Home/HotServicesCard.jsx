@@ -22,24 +22,26 @@ const HotServicesCard = ({ service }) => {
       <div className="p-4">
         <h3 className="text-lg font-semibold mb-2">{serviceName}</h3>
         <p className="text-sm text-gray-600 mb-4 line-clamp-3">{description}</p>
-
         <div className="flex items-center gap-3 mb-4">
           <img
-            src={providerImage}
+            src={providerImage || '/fallback-avatar.png'}
             alt={providerName}
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = '/fallback-avatar.png';
+            }}
             className="w-10 h-10 rounded-full object-cover"
           />
           <p className="font-medium">{providerName}</p>
         </div>
-
         <div className="flex justify-between items-center">
           <div className="flex items-center text-xl font-bold text-green-600">
             <span>{price}</span>
             <TbCurrencyTaka className="ml-1" />
           </div>
-         <Link to={`/services/${_id}`}>
-          <button className="btn btn-primary btn-sm">View Detail</button>
-         </Link>
+          <Link to={`/services/${_id}`}>
+            <button className="btn btn-primary btn-sm">View Detail</button>
+          </Link>
         </div>
       </div>
     </div>
