@@ -14,12 +14,13 @@ const MyApplications = () => {
     const fetchApplications = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/service-application?email=${user.email}`
+          `http://localhost:3000/service-application?email=${user.email}`,
+          { withCredentials: true }
         );
         setApplications(response.data);
-        setLoading(false);
       } catch (error) {
         console.error('Error fetching applications:', error);
+      } finally {
         setLoading(false);
       }
     };

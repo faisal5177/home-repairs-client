@@ -1,66 +1,55 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { signOut } from 'firebase/auth';
+import auth from '../../firebase/firebase.init';
 import AuthContext from '../../context/AuthContext';
 
-const Navbar = ({ service }) => {
-  const { user, signOutUser } = useContext(AuthContext);
+const Navbar = ({ service = {} }) => {
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleSignOut = () => {
-    signOutUser()
+    signOut(auth)
       .then(() => {
-        console.log('Successfully signed out');
+        console.log('Successful sign out');
+        navigate('/');
       })
       .catch((error) => {
-        console.error('Failed to sign out:', error);
+        console.log('Sign out failed', error.message);
+        alert('Failed to sign out. Please try again.');
       });
   };
 
-  // Navigation links
   const links = (
     <>
       <li>
-        <Link to="/">Home</Link>
+        <NavLink to="/">Home</NavLink>
       </li>
       <li>
-        <Link to="/allServices">Services</Link>
+        <NavLink to="/allServices">Services</NavLink>
       </li>
-      {user && (
+      <li>
+        <NavLink to="/addService">Add Service</NavLink>
+      </li>
+      <li>
+        <NavLink to="/myPostedServices">Booked</NavLink>
+      </li>
+      <li>
+        <NavLink to="/myApplications">Manage Services</NavLink>
+      </li>
+      {user && service?._id && (
         <li>
-          <div className="dropdown dropdown-right">
-            <div tabIndex={0} role="button" className="">
-              Dashboard
-            </div>
-            <ul
-              tabIndex={0}
-              className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
-            >
-              <li>
-                <Link to="/addService">Add Service</Link>
-              </li>
-              <li>
-                <Link to="/myPostedServices">Booked</Link>
-              </li>
-              <li>
-                <Link to="/myApplications">Manage Services</Link>
-              </li>
-              {service && service._id && (
-                <li>
-                  <Link to={`/viewApplications/${service._id}`}>
-                    {' '}
-                    Service To Do{' '}
-                  </Link>
-                </li>
-              )}
-            </ul>
-          </div>
+          <NavLink to={`/viewApplications/${service._id}`}>
+            Service To Do
+          </NavLink>
         </li>
       )}
     </>
   );
 
   return (
-    <nav>
-      <div className="navbar bg-base-100 shadow-sm">
+    <div className="bg-base-100">
+      <div className="navbar bg-base-100">
         {/* Navbar Start */}
         <div className="navbar-start">
           <div className="dropdown">
@@ -82,21 +71,21 @@ const Navbar = ({ service }) => {
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
             >
               {links}
             </ul>
           </div>
-          {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 btn btn-ghost">
-            <img className="w-[50px] h-auto rounded-full" src="" alt="" />
-            <h2 className="font-bold text-xl">Home Repairs</h2>
+          <Link to="/" className="btn btn-ghost text-xl">
+            Home Repairs
           </Link>
         </div>
+
         {/* Navbar Center */}
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">{links}</ul>
         </div>
+
         {/* Navbar End */}
         <div className="navbar-end gap-4">
           {!user ? (
@@ -130,7 +119,7 @@ const Navbar = ({ service }) => {
           )}
         </div>
       </div>
-    </nav>
+    </div>
   );
 };
 
