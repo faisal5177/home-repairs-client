@@ -9,14 +9,19 @@ const ViewApplications = () => {
 
   useEffect(() => {
     if (user?.email) {
-      fetch(`http://localhost:3000/service-application?email=${user.email}`)
-        .then((res) => res.json())
+      fetch(`http://localhost:3000/service-application?email=${user.email}`, {
+        credentials: 'include',
+      })
+        .then((res) => {
+          if (!res.ok) throw new Error('Unauthorized access');
+          return res.json();
+        })
         .then((data) => {
           setServices(data);
           setLoading(false);
         })
         .catch((err) => {
-          console.error('Failed to load bookings', err);
+          console.error('Failed to load applications', err);
           setLoading(false);
         });
     }
@@ -31,6 +36,7 @@ const ViewApplications = () => {
           headers: {
             'Content-Type': 'application/json',
           },
+          credentials: 'include',
           body: JSON.stringify({ status: newStatus }),
         }
       );

@@ -11,24 +11,19 @@ const MyApplications = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchApplications = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:3000/service-application?email=${user.email}`,
-          { withCredentials: true }
-        );
-        setApplications(response.data);
-      } catch (error) {
-        console.error('Error fetching applications:', error);
-      } finally {
+    axios
+      .get(`http://localhost:3000/service-application?email=${user.email}`, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        setApplications(res.data);
         setLoading(false);
-      }
-    };
-
-    if (user?.email) {
-      fetchApplications();
-    }
-  }, [user?.email]);
+      })
+      .catch((err) => {
+        console.error('Error fetching data:', err);
+        setLoading(false);
+      });
+  }, [user.email]);
 
   const handleDelete = async (applicationId) => {
     try {
