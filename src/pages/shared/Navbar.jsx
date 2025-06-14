@@ -51,7 +51,7 @@ const Navbar = ({ service = {} }) => {
         {isDropdownOpen && (
           <ul className="absolute z-10 w-52 p-2 bg-base-100 rounded-box shadow-md">
             <li>
-              <NavLink to="/addService">Add Service</NavLink>
+              <NavLink to="/allServices">Add Service</NavLink>
             </li>
             <li>
               <NavLink to="/myApplications">Booked</NavLink>

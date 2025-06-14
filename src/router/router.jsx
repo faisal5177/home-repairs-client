@@ -58,12 +58,17 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: 'allServices',
+        path: '/allServices',
         element: (
           <PrivateRouter>
-            <AllServices></AllServices>
+            <AllServices />
           </PrivateRouter>
         ),
+        loader: async () => {
+          const res = await fetch('http://localhost:3000/services-count');
+          const countData = await res.json();
+          return countData;
+        },
       },
       {
         path: 'myPostedServices',
