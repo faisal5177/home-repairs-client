@@ -51,7 +51,7 @@ const MyApplications = () => {
   return (
     <div className="my-5 border rounded-lg shadow-xl p-6">
       <h2 className="text-2xl font-semibold mb-4">
-      Applied Services ({applications.length})
+        Applied Services ({applications.length})
       </h2>
 
       {applications.length === 0 ? (
@@ -101,15 +101,8 @@ const MyApplications = () => {
                       onClick={() => handleDelete(app._id)}
                       title="Delete Application"
                     >
-                      <RiDeleteBinLine className="text-red-600" />
+                      <RiDeleteBinLine className="text-red-600 w-10" />
                     </button>
-                    <Link
-                      to={`/viewApplications/${app._id}`}
-                      className="btn btn-ghost btn-xs"
-                      title="View/Edit Application"
-                    >
-                      <MdSystemUpdateAlt className="text-blue-700" />
-                    </Link>
                   </td>
                 </tr>
               ))}

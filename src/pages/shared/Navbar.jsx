@@ -54,10 +54,10 @@ const Navbar = ({ service = {} }) => {
               <NavLink to="/addService">Add Service</NavLink>
             </li>
             <li>
-              <NavLink to="/myPostedServices">Booked</NavLink>
+              <NavLink to="/myApplications">Booked</NavLink>
             </li>
             <li>
-              <NavLink to="/myApplications">Manage Services</NavLink>
+              <NavLink to="/myPostedServices">Manage Services</NavLink>
             </li>
             <li>
               <NavLink to={`/viewApplications/${service._id}`}>

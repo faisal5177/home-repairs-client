@@ -40,7 +40,7 @@ const EditService = () => {
         },
         body: JSON.stringify({
           serviceArea: service.serviceArea,
-          applicationDate: service.applicationDate, // Correct key here
+          applicationDate: service.applicationDate,
         }),
       });
 

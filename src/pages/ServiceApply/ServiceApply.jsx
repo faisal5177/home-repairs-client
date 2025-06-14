@@ -45,7 +45,7 @@ const ServiceApply = () => {
             showConfirmButton: false,
             timer: 1500,
           });
-          navigate('/myPostedServices');
+          navigate('/allServices');
         }
       });
   };

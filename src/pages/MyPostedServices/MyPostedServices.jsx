@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import useAuth from '../../hooks/useAuth';
-import Swal from 'sweetalert2';
 import { Link, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import useAuth from '../../hooks/useAuth';
 
 const MyPostedServices = () => {
   const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
   const { user } = useAuth();
   const navigate = useNavigate();
 
@@ -12,8 +13,14 @@ const MyPostedServices = () => {
     if (user?.email) {
       fetch(`http://localhost:3000/services?email=${user.email}`)
         .then((res) => res.json())
-        .then((data) => setServices(data))
-        .catch((err) => console.error('Failed to fetch services:', err));
+        .then((data) => {
+          setServices(data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.error('Failed to fetch services:', err);
+          setLoading(false);
+        });
     }
   }, [user?.email]);
 
@@ -40,7 +47,7 @@ const MyPostedServices = () => {
           return res.json();
         })
         .then(() => {
-          setServices(services.filter((service) => service._id !== id));
+          setServices((prev) => prev.filter((service) => service._id !== id));
           Swal.fire('Deleted!', 'Your service has been deleted.', 'success');
         })
         .catch((err) => {
@@ -53,7 +60,10 @@ const MyPostedServices = () => {
   return (
     <div className="my-5 border rounded-lg shadow-2xl p-6">
       <h2 className="text-3xl mb-4">Manage My Services ({services.length})</h2>
-      {services.length === 0 ? (
+
+      {loading ? (
+        <p className="text-center text-gray-500 text-lg">Loading...</p>
+      ) : services.length === 0 ? (
         <p className="text-center text-gray-500 text-lg">
           You haven’t added any services yet.
         </p>
@@ -75,17 +85,21 @@ const MyPostedServices = () => {
               {services.map((service, index) => (
                 <tr key={service._id}>
                   <td>{index + 1}</td>
-                  <td>{service.serviceName}</td>
-                  <td>{new Date(service.createdAt).toLocaleDateString()}</td>
-                  <td>${service.price}</td>
-                  <td>{service.serviceArea}</td>
-                  <td>{service.applicationCount}</td>
+                  <td>{service.serviceName || 'N/A'}</td>
+                  <td>
+                    {service.createdAt
+                      ? new Date(service.createdAt).toLocaleDateString()
+                      : 'N/A'}
+                  </td>
+                  <td>${service.price ?? 'N/A'}</td>
+                  <td>{service.serviceArea || 'N/A'}</td>
+                  <td>{service.applicationCount ?? 0}</td>
                   <td className="flex gap-2">
                     <Link
                       to={`/editService/${service._id}`}
                       className="btn btn-sm btn-warning"
                     >
-                      Edit
+                      Update
                     </Link>
                     <button
                       className="btn btn-sm btn-error"
