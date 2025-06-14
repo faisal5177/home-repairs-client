@@ -71,25 +71,25 @@ const Footer = () => {
         {/* Social Media Section */}
         <div className="flex justify-center space-x-6">
           <a
-            href="#"
+            href="https://www.facebook.com/"
             className="text-2xl text-gray-400 hover:text-green-300 transition"
           >
             <FaFacebookF />
           </a>
           <a
-            href="#"
+            href="https://x.com/"
             className="text-2xl text-gray-400 hover:text-green-300 transition"
           >
             <FaTwitter />
           </a>
           <a
-            href="#"
+            href="https://www.instagram.com/"
             className="text-2xl text-gray-400 hover:text-green-300 transition"
           >
             <FaInstagram />
           </a>
           <a
-            href="#"
+            href="https://www.linkedin.com/"
             className="text-2xl text-gray-400 hover:text-green-300 transition"
           >
             <FaLinkedinIn />
