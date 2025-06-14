@@ -51,7 +51,7 @@ const MyApplications = () => {
   return (
     <div className="my-5 border rounded-lg shadow-xl p-6">
       <h2 className="text-2xl font-semibold mb-4">
-        My Applied Services ({applications.length})
+      Applied Services ({applications.length})
       </h2>
 
       {applications.length === 0 ? (
@@ -95,7 +95,7 @@ const MyApplications = () => {
                   <td>{new Date(app.serviceDate).toLocaleDateString()}</td>
                   <td>{app.location}</td>
                   <td>{app.status || 'Pending'}</td>
-                  <td className="flex items-center gap-2">
+                  <td className="flex items-center mt-3 gap-2">
                     <button
                       className="btn btn-ghost btn-xs"
                       onClick={() => handleDelete(app._id)}

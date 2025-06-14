@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import auth from '../../firebase/firebase.init';
@@ -7,6 +7,8 @@ import AuthContext from '../../context/AuthContext';
 const Navbar = ({ service = {} }) => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   const handleSignOut = () => {
     signOut(auth)
@@ -20,6 +22,17 @@ const Navbar = ({ service = {} }) => {
       });
   };
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   const links = (
     <>
       <li>
@@ -28,25 +41,32 @@ const Navbar = ({ service = {} }) => {
       <li>
         <NavLink to="/allServices">Services</NavLink>
       </li>
-      <details className="dropdown">
-        <summary className="m-[6px] hover:sky-600">Dashboard</summary>
-        <ul className="menu dropdown-content bg-base-100 rounded-box z-10 w-52 p-2 shadow-sm">
-          <li>
-            <NavLink to="/addService">Add Service</NavLink>
-          </li>
-          <li>
-            <NavLink to="/myPostedServices">Booked</NavLink>
-          </li>
-          <li>
-            <NavLink to="/myApplications">Manage Services</NavLink>
-          </li>
-          <li>
-            <NavLink to={`/viewApplications/${service._id}`}>
-              Service To Do
-            </NavLink>
-          </li>
-        </ul>
-      </details>
+      <li ref={dropdownRef} className="relative">
+        <button
+          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+          className=" hover:text-sky-600"
+        >
+          Dashboard
+        </button>
+        {isDropdownOpen && (
+          <ul className="absolute z-10 w-52 p-2 bg-base-100 rounded-box shadow-md">
+            <li>
+              <NavLink to="/addService">Add Service</NavLink>
+            </li>
+            <li>
+              <NavLink to="/myPostedServices">Booked</NavLink>
+            </li>
+            <li>
+              <NavLink to="/myApplications">Manage Services</NavLink>
+            </li>
+            <li>
+              <NavLink to={`/viewApplications/${service._id}`}>
+                Service To Do
+              </NavLink>
+            </li>
+          </ul>
+        )}
+      </li>
     </>
   );
 
@@ -86,6 +106,7 @@ const Navbar = ({ service = {} }) => {
               alt="Home Repairs Logo"
             />
           </Link>
+          <h2 className="text-lg font-bold">Home Repairs</h2>
         </div>
 
         {/* Navbar Center */}
