@@ -31,7 +31,7 @@ const SignIn = () => {
       console.log('sign in', result.user.email);
       const user = { email: result.user.email };
       axios
-        .post('https://job-protal-server-nine.vercel.app/jwt', user, {
+        .post('http://localhost:3000/jwt', user, {
           withCredentials: true,
         })
         .then((res) => {

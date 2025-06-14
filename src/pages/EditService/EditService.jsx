@@ -10,12 +10,12 @@ const EditService = () => {
   // Fetch existing service data
   useEffect(() => {
     fetch(`http://localhost:3000/services/${id}`)
-      .then(res => {
+      .then((res) => {
         if (!res.ok) throw new Error('Failed to fetch service');
         return res.json();
       })
-      .then(data => setService(data))
-      .catch(err => {
+      .then((data) => setService(data))
+      .catch((err) => {
         console.error('Error fetching service:', err);
         Swal.fire('Error', 'Failed to load service data', 'error');
       });
@@ -23,7 +23,7 @@ const EditService = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setService(prev => ({
+    setService((prev) => ({
       ...prev,
       [name]: value,
     }));
@@ -88,7 +88,9 @@ const EditService = () => {
           />
         </div>
 
-        <button type="submit" className="btn btn-primary w-full">Update Service</button>
+        <button type="submit" className="btn btn-primary w-full">
+          Update Service
+        </button>
       </form>
     </div>
   );

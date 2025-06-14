@@ -8,10 +8,10 @@ const AllServices = () => {
     fetch('http://localhost:3000/services')
       .then((res) => res.json())
       .then((data) => {
-        console.log("Fetched All Services:", data);
-        setServices(data); 
+        console.log('Fetched All Services:', data);
+        setServices(data);
       })
-      .catch((error) => console.error("Error fetching services:", error));
+      .catch((error) => console.error('Error fetching services:', error));
   }, []);
 
   return (

@@ -28,27 +28,30 @@ const Navbar = ({ service = {} }) => {
       <li>
         <NavLink to="/allServices">Services</NavLink>
       </li>
-      <li>
-        <NavLink to="/addService">Add Service</NavLink>
-      </li>
-      <li>
-        <NavLink to="/myPostedServices">Booked</NavLink>
-      </li>
-      <li>
-        <NavLink to="/myApplications">Manage Services</NavLink>
-      </li>
-      {user && service?._id && (
-        <li>
-          <NavLink to={`/viewApplications/${service._id}`}>
-            Service To Do
-          </NavLink>
-        </li>
-      )}
+      <details className="dropdown">
+        <summary className="m-[6px] hover:sky-600">Dashboard</summary>
+        <ul className="menu dropdown-content bg-base-100 rounded-box z-10 w-52 p-2 shadow-sm">
+          <li>
+            <NavLink to="/addService">Add Service</NavLink>
+          </li>
+          <li>
+            <NavLink to="/myPostedServices">Booked</NavLink>
+          </li>
+          <li>
+            <NavLink to="/myApplications">Manage Services</NavLink>
+          </li>
+          <li>
+            <NavLink to={`/viewApplications/${service._id}`}>
+              Service To Do
+            </NavLink>
+          </li>
+        </ul>
+      </details>
     </>
   );
 
   return (
-    <div className="bg-base-100">
+    <div className="sticky top-0 z-50 bg-base-100 shadow-md">
       <div className="navbar bg-base-100">
         {/* Navbar Start */}
         <div className="navbar-start">
@@ -71,13 +74,17 @@ const Navbar = ({ service = {} }) => {
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-20 mt-3 w-52 p-2 shadow"
             >
               {links}
             </ul>
           </div>
           <Link to="/" className="btn btn-ghost text-xl">
-            Home Repairs
+            <img
+              className="w-[60px] rounded-full"
+              src="https://i.ibb.co/9HmwHp2J/Chat-GPT-Image-Jun-14-2025-12-52-29-PM.png"
+              alt="Home Repairs Logo"
+            />
           </Link>
         </div>
 
