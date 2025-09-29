@@ -3,22 +3,23 @@ import HotServices from '../Home/HotServices';
 import { FaAngleRight, FaAngleLeft } from 'react-icons/fa6';
 
 const AllServices = () => {
-  const itemsPerPage = 4;
+  const [sort, setSort] = useState(false);
+  const itemsPerPage = 6;
 
   const [currentPage, setCurrentPage] = useState(1);
   const [services, setServices] = useState([]);
   const [pageCount, setPageCount] = useState(0);
 
-  // Fetch services for current page
+  // ✅ Fetch services for current page and sort
   useEffect(() => {
     fetch(
-      `http://localhost:3000/services?page=${currentPage}&limit=${itemsPerPage}`
+      `http://localhost:3000/services?page=${currentPage}&limit=${itemsPerPage}&sort=${sort}`
     )
       .then((res) => res.json())
       .then((data) => setServices(data));
-  }, [currentPage]);
+  }, [currentPage, sort]);
 
-  // Fetch total count of services dynamically
+  // ✅ Fetch total count of services ONCE and when itemsPerPage changes
   useEffect(() => {
     fetch('http://localhost:3000/services-count')
       .then((res) => res.json())
@@ -27,8 +28,14 @@ const AllServices = () => {
         const pages = Math.ceil(total / itemsPerPage);
         setPageCount(pages);
       });
-  }, [services]);
+  }, [itemsPerPage]);
 
+  // ✅ Reset to page 1 whenever sort changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [sort]);
+
+  // Pagination buttons array
   const pages = [...Array(pageCount).keys()].map((i) => i + 1);
 
   return (
@@ -57,7 +64,17 @@ const AllServices = () => {
         />
       </div>
 
-      {/* Services */}
+      {/* Sort Button */}
+      <div className="flex justify-center mb-6">
+        <button
+          onClick={() => setSort(!sort)}
+          className={`font-bold btn btn-neutral ${sort && 'btn-success'}`}
+        >
+          {sort ? 'Sorted By Price (Low to High)' : 'Sort By Price'}
+        </button>
+      </div>
+
+      {/* Services List */}
       <HotServices services={services} />
 
       {/* Pagination */}

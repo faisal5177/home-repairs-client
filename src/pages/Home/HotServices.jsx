@@ -5,9 +5,8 @@ const HotServices = ({ services: propServices }) => {
   const [services, setServices] = useState([]);
 
   useEffect(() => {
-    // Only fetch if no props provided
     if (!propServices) {
-      fetch('http://localhost:3000/services')
+      fetch('http://localhost:3000/services?sort=false')
         .then((res) => res.json())
         .then((data) => {
           setServices(data.slice(0, 6));
@@ -19,7 +18,7 @@ const HotServices = ({ services: propServices }) => {
   const finalServices = propServices || services;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-4">
+    <div className="max-w-7xl mx-auto px-4 py-8">
       <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">
         {propServices ? 'All Services' : 'Popular Services'}
       </h2>
