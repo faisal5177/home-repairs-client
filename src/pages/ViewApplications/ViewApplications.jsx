@@ -9,7 +9,8 @@ const ViewApplications = () => {
 
   useEffect(() => {
     if (user?.email) {
-      fetch(`http://localhost:3000/service-application?email=${user.email}`, {
+      fetch(`http://localhost:3000/service-application/provider?email=${user.email}`, {
+
         credentials: 'include',
       })
         .then((res) => {
